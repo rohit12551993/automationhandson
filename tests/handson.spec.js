@@ -1,11 +1,9 @@
 
 import { test, expect } from '@playwright/test';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 
-// Resolve the current test file's directory
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+
+
+
 
 test('my first Playwright test', async ({ page }) => {
 
