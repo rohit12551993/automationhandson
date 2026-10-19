@@ -1,22 +1,23 @@
 
 import { test, expect } from '@playwright/test';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
+// Resolve the current test file's directory
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 test('my first Playwright test', async ({ page }) => {
 
-  // Open the practice website
+  // 1. Open the practice website
   await page.goto('https://testautomationpractice.blogspot.com/');
 
-  // Verify page content
+  // 2. Verify page content
   await expect(
     page.getByText('Automation Testing Practice')
   ).toBeVisible();
 
-  // Fill text fields
+  // 3. Fill text fields
   await page.locator('#name').fill('ROHIT MADAN');
 
   await page.locator('#email').pressSequentially(
@@ -29,42 +30,37 @@ test('my first Playwright test', async ({ page }) => {
     '1255 sector 7 karnal'
   );
 
-  // Select gender and verify
+  // 4. Select gender and verify
   await page.locator('#male').check();
   await expect(page.locator('#male')).toBeChecked();
 
-  // Hover over dropdown
+  // 5. Hover over dropdown
   await page.locator('.dropbtn').hover();
 
-  // Double-click and right-click
+  // 6. Double-click and right-click
   await page.getByText('Copy Text').dblclick();
 
   await page.getByText('Copy Text').click({
     button: 'right'
   });
 
-  // Select country
+  // 7. Select country
   await page.locator('#country').selectOption('Canada');
 
-  // Drag and drop
+  // 8. Drag and drop
   await page.locator('#draggable').dragTo(
     page.locator('#droppable')
   );
 
-  // Prepare a cross-platform file path
-  const filePath = path.join(
-    __dirname,
-    'test-data',
-    'Rohit_Madan_ATS_Resume.pdf'
-  );
+ 
 
-  // Upload a single file
-  await page.locator('#singleFileInput').setInputFiles(filePath);
+  // 10. Upload a single file
+  await page.locator('#singleFileInput').setInputFiles("C:\Users\kanik\Downloads\Rohit_Madan_ATS_Resume.pdf");
 
-  // Upload multiple files
+  // 11. Upload multiple files
   await page.locator('#multipleFilesInput').setInputFiles([
-    filePath,
-    filePath
+    "C:\Users\kanik\Downloads\Rohit_Madan_ATS_Resume.pdf",
+    "C:\Users\kanik\Downloads\Rohit_Madan_ATS_Resume.pdf"
   ]);
 
 });
