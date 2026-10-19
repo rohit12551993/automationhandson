@@ -1,101 +1,70 @@
-/*const { test, expect } = require('@playwright/test');
-
-test('my first Playwright test', async ({ page }) => {
-
-  await page.goto('https://testautomationpractice.blogspot.com/');
-
-  await expect(page).toHaveURL('https://testautomationpractice.blogspot.com/');
-
-  await page.locator('#name').fill('Rohit Madan');
-  await page.locator('#email').fill('rohitmadan1993@gmail.com');
-
-  const randomNumber = Math.floor(1000000000 + Math.random() * 9000000000);
-
-  await page.locator('#phone').fill(randomNumber.toString());
-
-  console.log('Random number:', randomNumber);
-
-  await page.locator('#male').check();
-
-  await page.locator('input[type="checkbox"]').nth(6).check();
-
-  await page.locator('#country').selectOption('Canada');
-
-  await page.reload();
-
-  await page.locator('#Wikipedia1_wikipedia-search-input').fill("Virat Kohli");
-
-  await page.locator('[class="wikipedia-search-button"]').click();
-
-  await page.locator('[class="dropbtn"]').hover();
-
-  await page.locator('#field2').dblclick();
-
-  await page.locator('#draggable').dragTo(page.locator('#droppable'));
-
-  await page.goto("https://www.google.com/webhp?hl=en&sa=X&ved=2ahUKEwiai-DpqJSXAxVlRmwGHVxCAcUQPHoECAYQBA");
-
-  await page.goto("https://www.yahoo.com/");
-
-  await page.goBack();
-
-  await page.goForward();
-
-  await page.reload();
-
-  await page.screenshot();
-   
-  await page.pause();
-
-
-
-});*/
-
-
 
 import { test, expect } from '@playwright/test';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 test('my first Playwright test', async ({ page }) => {
+
+  // Open the practice website
   await page.goto('https://testautomationpractice.blogspot.com/');
 
-  await expect(page.getByText('Automation Testing Practice')).toBeVisible();
+  // Verify page content
+  await expect(
+    page.getByText('Automation Testing Practice')
+  ).toBeVisible();
 
-  await page.locator('#name').fill("ROHIT MADAN");
+  // Fill text fields
+  await page.locator('#name').fill('ROHIT MADAN');
 
-   await page.locator('#email').pressSequentially("rohitmadan1993@gmail.com");
+  await page.locator('#email').pressSequentially(
+    'rohitmadan1993@gmail.com'
+  );
 
-    await page.locator('#phone').pressSequentially("0000000000");
+  await page.locator('#phone').pressSequentially('0000000000');
 
-    await page.locator('#textarea').pressSequentially("1255 sector 7 karnal");
+  await page.locator('#textarea').pressSequentially(
+    '1255 sector 7 karnal'
+  );
 
-    await page.locator('#male').check();
+  // Select gender and verify
+  await page.locator('#male').check();
+  await expect(page.locator('#male')).toBeChecked();
 
-    expect(await page.locator('#male').isChecked());
+  // Hover over dropdown
+  await page.locator('.dropbtn').hover();
 
-    await page.locator(".dropbtn").hover();
+  // Double-click and right-click
+  await page.getByText('Copy Text').dblclick();
 
-    await page.getByText("Copy Text").dblclick();
+  await page.getByText('Copy Text').click({
+    button: 'right'
+  });
 
-    await page.getByText("Copy Text").click({button : 'right'});
+  // Select country
+  await page.locator('#country').selectOption('Canada');
 
+  // Drag and drop
+  await page.locator('#draggable').dragTo(
+    page.locator('#droppable')
+  );
 
-  await page.locator('#country').selectOption('Canada' , 'India');
+  // Prepare a cross-platform file path
+  const filePath = path.join(
+    __dirname,
+    'test-data',
+    'Rohit_Madan_ATS_Resume.pdf'
+  );
 
- 
+  // Upload a single file
+  await page.locator('#singleFileInput').setInputFiles(filePath);
 
-  await page.locator('#draggable').dragTo(page.locator('#droppable'));
+  // Upload multiple files
+  await page.locator('#multipleFilesInput').setInputFiles([
+    filePath,
+    filePath
+  ]);
 
- await page.locator('#singleFileInput').setInputFiles('C:\\Users\\kanik\\Downloads\\Rohit_Madan_ATS_Resume.pdf');
-
- await page.locator('#multipleFilesInput').setInputFiles('C:\\Users\\kanik\\Downloads\\Rohit_Madan_ATS_Resume.pdf' , 'C:\\Users\\kanik\\Downloads\\Rohit_Madan_ATS_Resume.pdf' );
-
-
-    
-
-
-  
-
-
-
-  
 });
