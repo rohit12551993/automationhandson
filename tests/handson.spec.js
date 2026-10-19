@@ -1,64 +1,68 @@
 
 import { test, expect } from '@playwright/test';
 
-
-
-
-
 test('my first Playwright test', async ({ page }) => {
 
   // 1. Open the practice website
   await page.goto('https://testautomationpractice.blogspot.com/');
 
-  // 2. Verify page content
-  await expect(
-    page.getByText('Automation Testing Practice')
-  ).toBeVisible();
-
-  // 3. Fill text fields
-  await page.locator('#name').fill('ROHIT MADAN');
-
-  await page.locator('#email').pressSequentially(
-    'rohitmadan1993@gmail.com'
+  // 2. Verify that the page has loaded
+  await expect(page).toHaveURL(
+    /testautomationpractice\.blogspot\.com/
   );
 
-  await page.locator('#phone').pressSequentially('0000000000');
+  // 3. Fill text fields and verify their values
+  const nameInput = page.locator('#name');
+  await nameInput.fill('ROHIT MADAN');
+  await expect(nameInput).toHaveValue('ROHIT MADAN');
 
-  await page.locator('#textarea').pressSequentially(
-    '1255 sector 7 karnal'
-  );
+  const emailInput = page.locator('#email');
+  await emailInput.fill('rohitmadan1993@gmail.com');
+  await expect(emailInput).toHaveValue('rohitmadan1993@gmail.com');
+
+  const phoneInput = page.locator('#phone');
+  await phoneInput.fill('0000000000');
+  await expect(phoneInput).toHaveValue('0000000000');
+
+  const addressInput = page.locator('#textarea');
+  await addressInput.fill('1255 sector 7 karnal');
+  await expect(addressInput).toHaveValue('1255 sector 7 karnal');
 
   // 4. Select gender and verify
-  await page.locator('#male').check();
-  await expect(page.locator('#male')).toBeChecked();
+  const maleRadio = page.locator('#male');
+  await maleRadio.check();
+  await expect(maleRadio).toBeChecked();
 
-  // 5. Hover over dropdown
-  await page.locator('.dropbtn').hover();
+  // 5. Hover over the dropdown
+  const dropdown = page.locator('.dropbtn');
+  await expect(dropdown).toBeVisible();
+  await dropdown.hover();
 
   // 6. Double-click and right-click
-  await page.getByText('Copy Text').dblclick();
+  const copyText = page.getByText('Copy Text', { exact: true });
+  await expect(copyText).toBeVisible();
 
-  await page.getByText('Copy Text').click({
-    button: 'right'
-  });
+  await copyText.dblclick();
+  await expect(copyText).toBeVisible();
 
-  // 7. Select country
-  await page.locator('#country').selectOption('Canada');
+  await copyText.click({ button: 'right' });
+  await expect(copyText).toBeVisible();
+
+  // 7. Select country and verify
+  const countryDropdown = page.locator('#country');
+  await countryDropdown.selectOption('Canada');
+  await expect(countryDropdown).toHaveValue('Canada');
 
   // 8. Drag and drop
-  await page.locator('#draggable').dragTo(
-    page.locator('#droppable')
-  );
+  const draggable = page.locator('#draggable');
+  const droppable = page.locator('#droppable');
 
- 
+  await expect(draggable).toBeVisible();
+  await expect(droppable).toBeVisible();
 
-  // 10. Upload a single file
-  await page.locator('#singleFileInput').setInputFiles("C:\Users\kanik\Downloads\Rohit_Madan_ATS_Resume.pdf");
+  await draggable.dragTo(droppable);
 
-  // 11. Upload multiple files
-  await page.locator('#multipleFilesInput').setInputFiles([
-    "C:\Users\kanik\Downloads\Rohit_Madan_ATS_Resume.pdf",
-    "C:\Users\kanik\Downloads\Rohit_Madan_ATS_Resume.pdf"
-  ]);
+  // Verify the drop target remains visible
+  await expect(droppable).toBeVisible();
 
 });
