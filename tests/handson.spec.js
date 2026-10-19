@@ -48,10 +48,14 @@ test('my first Playwright test', async ({ page }) => {
   await copyText.click({ button: 'right' });
   await expect(copyText).toBeVisible();
 
+
   // 7. Select country and verify
   const countryDropdown = page.locator('#country');
-  await countryDropdown.selectOption('Canada');
-  await expect(countryDropdown).toHaveValue('Canada');
+
+  await countryDropdown.selectOption('canada');
+
+  await expect(countryDropdown).toHaveValue('canada');
+
 
   // 8. Drag and drop
   const draggable = page.locator('#draggable');
